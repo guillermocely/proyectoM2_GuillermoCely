@@ -46,11 +46,11 @@ const postsService = {
       throw new Error('title, content y author_id son obligatorios');
     }
 
-    // Error: olvidé verificar que el author existe
-    // const authorResult = await dbClient.query('SELECT id FROM authors WHERE id = $1', [author_id]);
-    // if (authorResult.rows.length === 0) {
-    //   throw new Error('El author_id no existe');
-    // }
+    // Verificar que el author existe
+    const authorResult = await dbClient.query('SELECT id FROM authors WHERE id = $1', [author_id]);
+    if (authorResult.rows.length === 0) {
+      throw new Error('El author_id no existe');
+    }
 
     const result = await dbClient.query(
       'INSERT INTO posts (title, content, author_id, published) VALUES ($1, $2, $3, $4) RETURNING *',

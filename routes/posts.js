@@ -41,9 +41,11 @@ router.post('/', async (req, res) => {
     const post = await postsService.create(req.body);
     res.status(201).json(post);
   } catch (error) {
-    // Error: no manejo error de foreign key
-    if (error.message.includes('obligatorios')) {
+    if (error.message.includes('obligatorios') || error.message.includes('no existe')) {
       return res.status(400).json({ error: error.message });
+    }
+    if (error.message.includes('foreign key')) {
+      return res.status(400).json({ error: 'El author_id no existe' });
     }
     res.status(500).json({ error: error.message });
   }
