@@ -20,7 +20,10 @@ const authorsService = {
   create: async (author) => {
     const { name, email, bio } = author;
     
-    // Error: olvidé validar campos obligatorios
+    if (!name || !email) {
+      throw new Error('name y email son obligatorios');
+    }
+
     const result = await dbClient.query(
       'INSERT INTO authors (name, email, bio) VALUES ($1, $2, $3) RETURNING *',
       [name, email, bio || null]
@@ -32,6 +35,12 @@ const authorsService = {
   update: async (id, author) => {
     const { name, email, bio } = author;
     
+    // Verificar que el author existe
+    const existing = await authorsService.getById(id);
+    if (!existing) {
+      return null;
+    }
+
     const result = await dbClient.query(
       'UPDATE authors SET name = COALESCE($1, name), email = COALESCE($2, email), bio = COALESCE($3, bio) WHERE id = $4 RETURNING *',
       [name, email, bio, id]
@@ -41,6 +50,12 @@ const authorsService = {
 
   // Eliminar un author
   delete: async (id) => {
+    // Verificar que el author existe
+    const existing = await authorsService.getById(id);
+    if (!existing) {
+      return null;
+    }
+
     const result = await dbClient.query('DELETE FROM authors WHERE id = $1 RETURNING *', [id]);
     return result.rows[0];
   }

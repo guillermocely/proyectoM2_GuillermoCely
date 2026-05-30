@@ -31,7 +31,12 @@ router.post('/', async (req, res) => {
     const author = await authorsService.create(req.body);
     res.status(201).json(author);
   } catch (error) {
-    // Error: no manejo errores de validación ni duplicados
+    if (error.message.includes('obligatorios')) {
+      return res.status(400).json({ error: error.message });
+    }
+    if (error.message.includes('duplicate key')) {
+      return res.status(400).json({ error: 'El email ya existe' });
+    }
     res.status(500).json({ error: error.message });
   }
 });
@@ -40,8 +45,14 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const author = await authorsService.update(req.params.id, req.body);
+    if (!author) {
+      return res.status(404).json({ error: 'Author no encontrado' });
+    }
     res.json(author);
   } catch (error) {
+    if (error.message.includes('duplicate key')) {
+      return res.status(400).json({ error: 'El email ya existe' });
+    }
     res.status(500).json({ error: error.message });
   }
 });
@@ -50,7 +61,10 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const author = await authorsService.delete(req.params.id);
-    res.json(author);
+    if (!author) {
+      return res.status(404).json({ error: 'Author no encontrado' });
+    }
+    res.json({ message: 'Author eliminado correctamente', author });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
