@@ -9,14 +9,13 @@ const dbClient = new Client({
   database: process.env.DB_NAME || 'integrator_db',
 });
 
-// Error: olvidé conectar a la base de datos
-// dbClient.connect()
-//   .then(() => {
-//     console.log('✅ Conectado a PostgreSQL exitosamente');
-//   })
-//   .catch(err => {
-//     console.error('❌ Error conectando a PostgreSQL:', err.message);
-//     process.exit(1);
-//   });
+dbClient.connect()
+  .then(() => {
+    console.log('✅ Conectado a PostgreSQL exitosamente');
+  })
+  .catch(err => {
+    console.error('❌ Error conectando a PostgreSQL:', err.message);
+    process.exit(1);
+  });
 
 module.exports = dbClient;
