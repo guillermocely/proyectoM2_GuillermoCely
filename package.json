@@ -3,29 +3,36 @@
   "version": "1.0.0",
   "description": "API REST MiniBlog - Proyecto Integrador M2",
   "main": "server.js",
+  "type": "module",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js",
-    "test": "jest --coverage",
-    "test:watch": "jest --watch"
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "cross-env NODE_ENV=test vitest --reporter=verbose",
+    "test:unit": "cross-env NODE_ENV=test vitest tests/unit/",
+    "test:integration": "cross-env NODE_ENV=test vitest tests/integration/",
+    "test:ui": "cross-env NODE_ENV=test vitest --ui",
+    "test:coverage": "cross-env NODE_ENV=test vitest --coverage"
   },
-  "keywords": ["api", "rest", "express", "postgresql", "miniblog"],
+  "keywords": [
+    "api",
+    "rest",
+    "express",
+    "postgresql",
+    "miniblog"
+  ],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
     "body-parser": "^2.2.2",
     "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "pg": "^8.21.0"
   },
   "devDependencies": {
-    "jest": "^29.7.0",
-    "supertest": "^6.3.4"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "coveragePathIgnorePatterns": ["/node_modules/"],
-    "testMatch": ["**/tests/**/*.test.js"]
+    "@vitest/ui": "^2.1.8",
+    "cross-env": "^7.0.3",
+    "supertest": "^7.2.2",
+    "vitest": "^2.1.9"
   }
 }
