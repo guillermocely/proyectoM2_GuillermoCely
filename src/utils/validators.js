@@ -97,7 +97,7 @@ function isValidString(value, minLength = 1) {
   return value.trim().length >= minLength;
 }
 
-module.exports = {
+export {
   validateAuthor,
   validatePost,
   isValidEmail,
