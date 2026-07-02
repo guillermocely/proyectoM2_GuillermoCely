@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
     const posts = await postsService.getAll();
     res.json(posts);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'Error interno del servidor al obtener posts' });
   }
 });
 
@@ -23,7 +23,7 @@ router.get('/:id', async (req, res) => {
     }
     res.json(post);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'Error interno del servidor al obtener post' });
   }
 });
 
@@ -33,7 +33,7 @@ router.get('/author/:authorId', async (req, res) => {
     const posts = await postsService.getByAuthor(parseInt(req.params.authorId));
     res.json(posts);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'Error interno del servidor al obtener posts por autor' });
   }
 });
 
@@ -72,7 +72,7 @@ router.delete('/:id', async (req, res) => {
     }
     res.json({ message: 'Post eliminado correctamente' });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'Error interno del servidor al eliminar post' });
   }
 });
 

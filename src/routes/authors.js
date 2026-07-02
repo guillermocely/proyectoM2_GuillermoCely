@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
     const authors = await authorsService.getAll();
     res.json(authors);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'Error interno del servidor al obtener autores' });
   }
 });
 
@@ -23,7 +23,7 @@ router.get('/:id', async (req, res) => {
     }
     res.json(author);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'Error interno del servidor al obtener autor' });
   }
 });
 
@@ -62,7 +62,7 @@ router.delete('/:id', async (req, res) => {
     }
     res.json({ message: 'Autor eliminado correctamente' });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'Error interno del servidor al eliminar autor' });
   }
 });
 
