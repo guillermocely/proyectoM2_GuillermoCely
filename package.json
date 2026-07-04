@@ -8,8 +8,8 @@
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
     "test": "cross-env NODE_ENV=test vitest --reporter=verbose",
-    "test:unit": "cross-env NODE_ENV=test vitest tests/unit/",
-    "test:integration": "cross-env NODE_ENV=test vitest tests/integration/",
+    "test:unit": "cross-env NODE_ENV=test vitest tests/*Service.test.js",
+    "test:integration": "cross-env NODE_ENV=test vitest tests/*.integration.test.js",
     "test:ui": "cross-env NODE_ENV=test vitest --ui",
     "test:coverage": "cross-env NODE_ENV=test vitest --coverage"
   },

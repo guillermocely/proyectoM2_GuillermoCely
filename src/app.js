@@ -5,6 +5,7 @@ import cors from 'cors';
 import dbClient from './db/config.js';        // ✅ Cambiado: ../db → ./db
 import authorsRoutes from './routes/authors.js';   // ✅ Cambiado: ../routes → ./routes
 import postsRoutes from './routes/posts.js';       // ✅ Cambiado: ../routes → ./routes
+import errorHandler from './middlewares/errorHandler.js'; // Middleware de errores
 
 const app = express();
 app.use(cors());
@@ -49,10 +50,7 @@ app.use('/api/authors', authorsRoutes);
 app.use('/api/posts', postsRoutes);
 
 // Middleware de manejo de errores global
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Error interno del servidor' });
-});
+app.use(errorHandler);
 
 // Endpoint de prueba de conexión a BD
 app.get('/api/test-db', async (req, res) => {

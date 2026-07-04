@@ -4,65 +4,74 @@ import authorsService from '../services/authorsService.js';
 
 const router = express.Router();
 
+// Función auxiliar para validar ID
+const validateId = (id) => {
+  const numId = parseInt(id);
+  if (isNaN(numId) || numId <= 0) {
+    throw new Error('ID inválido');
+  }
+  return numId;
+};
+
 // GET /authors - Obtener todos los autores
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
   try {
     const authors = await authorsService.getAll();
     res.json(authors);
   } catch (error) {
-    res.status(500).json({ error: 'Error interno del servidor al obtener autores' });
+    next(error);
   }
 });
 
 // GET /authors/:id - Obtener un autor por ID
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
   try {
-    const author = await authorsService.getById(parseInt(req.params.id));
+    const id = validateId(req.params.id);
+    const author = await authorsService.getById(id);
     if (!author) {
-      return res.status(404).json({ error: 'Autor no encontrado' });
+      throw new Error('Autor no encontrado');
     }
     res.json(author);
   } catch (error) {
-    res.status(500).json({ error: 'Error interno del servidor al obtener autor' });
+    next(error);
   }
 });
 
 // POST /authors - Crear un nuevo autor
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
   try {
     const newAuthor = await authorsService.create(req.body);
     res.status(201).json(newAuthor);
   } catch (error) {
-    if (error.message.includes('duplicada') || error.message.includes('email')) {
-      return res.status(409).json({ error: 'El email ya está registrado' });
-    }
-    res.status(400).json({ error: error.message });
+    next(error);
   }
 });
 
 // PUT /authors/:id - Actualizar un autor
-router.put('/:id', async (req, res) => {
+router.put('/:id', async (req, res, next) => {
   try {
-    const updatedAuthor = await authorsService.update(parseInt(req.params.id), req.body);
+    const id = validateId(req.params.id);
+    const updatedAuthor = await authorsService.update(id, req.body);
     if (!updatedAuthor) {
-      return res.status(404).json({ error: 'Autor no encontrado' });
+      throw new Error('Autor no encontrado');
     }
     res.json(updatedAuthor);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    next(error);
   }
 });
 
 // DELETE /authors/:id - Eliminar un autor
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req, res, next) => {
   try {
-    const deletedAuthor = await authorsService.delete(parseInt(req.params.id));
+    const id = validateId(req.params.id);
+    const deletedAuthor = await authorsService.delete(id);
     if (!deletedAuthor) {
-      return res.status(404).json({ error: 'Autor no encontrado' });
+      throw new Error('Autor no encontrado');
     }
-    res.json({ message: 'Autor eliminado correctamente' });
+    res.status(204).send();
   } catch (error) {
-    res.status(500).json({ error: 'Error interno del servidor al eliminar autor' });
+    next(error);
   }
 });
 

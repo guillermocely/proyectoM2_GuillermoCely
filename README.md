@@ -59,8 +59,8 @@ API-MiniBlog/
 │       └── validators.js      # Funciones de validación
 ├── tests/
 │   ├── setup.js               # Configuración de tests y mocks
-│   ├── authors.test.js        # Tests de integración para authors
-│   ├── posts.test.js          # Tests de integración para posts
+│   ├── authors.integration.test.js # Tests de integración para authors
+│   ├── posts.integration.test.js   # Tests de integración para posts
 │   ├── authorsService.test.js # Tests unitarios para authors
 │   └── postsService.test.js   # Tests unitarios para posts
 ├── docs/
@@ -156,12 +156,22 @@ npm run test:ui
 # Ejecutar tests con cobertura
 npm run test:coverage
 
-# Ejecutar solo tests unitarios
+# Ejecutar solo tests unitarios (validaciones)
 npm run test:unit
 
-# Ejecutar solo tests de integración
+# Ejecutar solo tests de integración (endpoints HTTP)
 npm run test:integration
 ```
+
+#### Tests Disponibles
+
+**Tests Unitarios:**
+- `authorsService.test.js` - Validación de datos de autores
+- `postsService.test.js` - Validación de datos de posts
+
+**Tests de Integración:**
+- `authors.integration.test.js` - Tests de endpoints HTTP de autores (CRUD completo + casos de error)
+- `posts.integration.test.js` - Tests de endpoints HTTP de posts (CRUD completo + casos de error)
 
 ## 📚 Endpoints de la API
 
@@ -292,8 +302,8 @@ El proyecto incluye una suite completa de pruebas con Vitest:
   - `postsService.test.js` - Tests del servicio de posts
 
 - **Tests de Integración**: Pruebas de endpoints HTTP
-  - `authors.test.js` - Tests de endpoints de autores
-  - `posts.test.js` - Tests de endpoints de posts
+  - `authors.integration.test.js` - Tests de endpoints de autores
+  - `posts.integration.test.js` - Tests de endpoints de posts
 
 ### Características del Testing
 

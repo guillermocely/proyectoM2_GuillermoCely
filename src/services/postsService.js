@@ -40,7 +40,7 @@ const postsService = {
     }
     const authorExists = await dbClient.query('SELECT id FROM authors WHERE id = $1', [author_id]);
     if (authorExists.rows.length === 0) {
-      throw new Error('El author_id no existe');
+      throw new Error('Autor no encontrado');
     }
     const result = await dbClient.query(
       'INSERT INTO posts (title, content, author_id, published) VALUES ($1, $2, $3, $4) RETURNING *',
@@ -54,7 +54,7 @@ const postsService = {
     if (author_id) {
       const authorExists = await dbClient.query('SELECT id FROM authors WHERE id = $1', [author_id]);
       if (authorExists.rows.length === 0) {
-        throw new Error('El author_id no existe');
+        throw new Error('Autor no encontrado');
       }
     }
     const result = await dbClient.query(

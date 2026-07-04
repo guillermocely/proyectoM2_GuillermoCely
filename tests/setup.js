@@ -29,6 +29,10 @@ const mockQuery = vi.fn(async (query, params) => {
   
   // INSERT author
   if (query.includes('INSERT INTO authors')) {
+    const emailExists = mockAuthors.some(a => a.email === params[1]);
+    if (emailExists) {
+      throw new Error('El email ya está duplicada');
+    }
     const newAuthor = {
       id: nextAuthorId++,
       name: params[0],
@@ -114,9 +118,9 @@ const mockQuery = vi.fn(async (query, params) => {
   if (query.includes('INSERT INTO posts')) {
     const authorExists = mockAuthors.some(a => a.id === params[2]);
     if (!authorExists) {
-      throw new Error('El author_id no existe');
+      throw new Error('Autor no encontrado');
     }
-    
+
     const newPost = {
       id: nextPostId++,
       title: params[0],
@@ -127,12 +131,12 @@ const mockQuery = vi.fn(async (query, params) => {
     };
     mockPosts.push(newPost);
     const author = mockAuthors.find(a => a.id === newPost.author_id);
-    return { 
+    return {
       rows: [{
         ...newPost,
         author_name: author?.name,
         author_email: author?.email
-      }] 
+      }]
     };
   }
   
